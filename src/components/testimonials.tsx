@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { testimonials } from "@/content/site";
-import { Logo3D } from "./motion/logo-3d";
+import { ResultCard } from "./result-card";
 
 export function Testimonials() {
   const [i, setI] = useState(0);
@@ -18,11 +18,11 @@ export function Testimonials() {
 
   return (
     <div
-      className="relative grid overflow-hidden bg-night text-white md:grid-cols-12"
+      className="pn-testimonials relative grid overflow-hidden bg-night text-white md:grid-cols-12"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="relative z-10 flex flex-col gap-10 px-6 py-14 sm:p-20 md:col-span-7">
+      <div className="relative z-10 flex flex-col gap-10 px-6 pb-0 pt-14 sm:p-20 md:col-span-7">
         <p className="label">Client praise</p>
         <h2 className="display text-[44px] leading-[1.08] sm:text-[64px]">
           Trusted by teams who ship.
@@ -52,9 +52,8 @@ export function Testimonials() {
           ))}
         </div>
       </div>
-      <div className="relative min-h-[22rem] md:col-span-5 md:min-h-0">
-        <div className="absolute inset-0 bg-[radial-gradient(50%_50%_at_50%_50%,rgba(91,69,255,0.28),transparent_72%)]" />
-        <Logo3D />
+      <div className="relative min-h-[320px] md:col-span-5 md:min-h-0">
+        <ResultCard index={i} />
       </div>
     </div>
   );

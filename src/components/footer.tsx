@@ -56,7 +56,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-24">
+        <div className="pixel-field mt-24">
           <Image
             src="/brand/logo-light.png"
             alt="Pixelnest"

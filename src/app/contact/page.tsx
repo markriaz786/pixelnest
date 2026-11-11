@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
-import { Circled, Reveal } from "@/components/reveal";
+import { Selected, Reveal } from "@/components/reveal";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default function ContactPage() {
     <section className="site-wrap pb-[160px] pt-[150px] sm:pt-[161px]">
       <Reveal>
         <h1 className="display text-[56px] leading-[1] sm:text-[88px] lg:text-[120px]">
-          Let&apos;s <Circled>talk</Circled>
+          Let&apos;s <Selected>talk</Selected>
         </h1>
       </Reveal>
 

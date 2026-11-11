@@ -4,8 +4,8 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 import Image from "next/image";
 import { useRef } from "react";
 
-// Image that drifts inside its frame as the page scrolls, and optionally
-// grows from slightly inset to full width as it enters the viewport.
+// Image that drifts inside its frame as the page scrolls, and optionally grows
+// from slightly inset to full width as it enters the viewport.
 export function ParallaxImage({
   src,
   alt,

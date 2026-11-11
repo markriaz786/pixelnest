@@ -86,30 +86,74 @@ body {
   transform: none;
 }
 
-/* Hand-drawn circle */
-.scribble path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1.3s 0.35s var(--ease-out-quint);
+/* A selected layer: a 1px coral frame with four square handles. The frame
+   grows from the word, then the handles pop in one after another. */
+.selected-frame {
+  position: absolute;
+  inset: 0.06em -0.12em 0.02em -0.1em;
+  border: 1px solid var(--accent);
+  pointer-events: none;
 }
-.is-in .scribble path {
-  stroke-dashoffset: 0;
+.selected-frame i {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  box-sizing: border-box;
+  border: 1px solid var(--accent);
+  background: var(--paper);
 }
-html:not(.js) .scribble path {
-  stroke-dashoffset: 0;
+.selected-frame i[data-c="tl"] { top: -5px; left: -5px; }
+.selected-frame i[data-c="tr"] { top: -5px; right: -5px; }
+.selected-frame i[data-c="bl"] { bottom: -5px; left: -5px; }
+.selected-frame i[data-c="br"] { bottom: -5px; right: -5px; }
+
+.js .selected-frame {
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity 0.5s ease 0.35s,
+    transform 0.8s var(--ease-out-quint) 0.35s;
+}
+.js .selected-frame i {
+  transform: scale(0);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.js .selected-frame i[data-c="tl"] { transition-delay: 0.7s; }
+.js .selected-frame i[data-c="tr"] { transition-delay: 0.78s; }
+.js .selected-frame i[data-c="br"] { transition-delay: 0.86s; }
+.js .selected-frame i[data-c="bl"] { transition-delay: 0.94s; }
+.js .is-in .selected-frame {
+  opacity: 1;
+  transform: none;
+}
+.js .is-in .selected-frame i {
+  transform: none;
 }
 
 /* Link with an underline that draws in */
+/* Underline as a row of pixels; on hover they turn coral and march along */
+@keyframes pixel-march {
+  to {
+    background-position: 8px 100%;
+  }
+}
 .link-line {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 100% 1px;
+  background-image: repeating-linear-gradient(to right, currentColor 0 3px, transparent 3px 8px);
+  background-size: 100% 3px;
   background-position: 0 100%;
   background-repeat: no-repeat;
-  transition: background-size 0.5s var(--ease-out-quint);
+  padding-bottom: 8px;
+  transition: color 0.3s ease;
 }
 .link-line:hover {
-  background-size: 0% 1px;
-  background-position: 100% 100%;
+  background-image: repeating-linear-gradient(to right, var(--accent) 0 3px, transparent 3px 8px);
+  background-repeat: repeat-x;
+  animation: pixel-march 0.5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .link-line:hover {
+    animation: none;
+  }
 }
 
 @keyframes float {
@@ -159,12 +203,185 @@ details[open] .faq-icon {
     transform: none;
     transition: none;
   }
-  .scribble path {
-    stroke-dashoffset: 0;
+  .js .selected-frame,
+  .js .selected-frame i {
+    opacity: 1;
+    transform: none;
     transition: none;
   }
   .float,
   .fade-in {
     animation: none;
   }
+}
+
+/* ---- How we work: a ruled row of steps on the dark band ---- */
+.pn-proc {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-top: 1px solid var(--night-line);
+  border-left: 1px solid var(--night-line);
+}
+@media (min-width: 640px) {
+  .pn-proc { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .pn-proc { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.pn-proc-step {
+  position: relative;
+  padding: 32px 28px 36px;
+  border-right: 1px solid var(--night-line);
+  border-bottom: 1px solid var(--night-line);
+  transition: background-color 0.5s ease;
+}
+/* The thread runs through the icon centers (32px padding + 24px to center) */
+.pn-proc-thread {
+  position: absolute;
+  z-index: 0;
+  top: 56px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--night-line);
+  pointer-events: none;
+}
+.pn-proc-thread-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  background: var(--accent);
+}
+@media (max-width: 1023px) {
+  .pn-proc-thread { display: none; }
+}
+.pn-proc-icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--night);
+  box-shadow: inset 0 0 0 1px rgb(246 244 238 / 0.24);
+  color: #f6f4ee;
+  transition:
+    box-shadow 0.4s ease,
+    color 0.4s ease,
+    transform 0.6s var(--ease-out-quint);
+}
+.pn-proc-tag {
+  padding: 5px 10px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--night-line);
+  font-size: 12px;
+  line-height: 1.2;
+  color: rgb(246 244 238 / 0.7);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .pn-proc-step:hover {
+    background: rgb(246 244 238 / 0.03);
+  }
+  .pn-proc-step:hover .pn-proc-icon {
+    color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
+    transform: rotate(-8deg);
+  }
+}
+
+.pn-proc-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--night-line);
+  border-left: 1px solid var(--night-line);
+}
+@media (min-width: 768px) {
+  .pn-proc-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.pn-proc-stat {
+  padding: 36px 28px;
+  border-right: 1px solid var(--night-line);
+  border-bottom: 1px solid var(--night-line);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Pixel motifs ---- */
+
+/* Section labels open with one coral pixel */
+p.label:not(.text-muted)::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 12px;
+  background: var(--accent);
+  vertical-align: 0.06em;
+}
+
+/* How we work: icon tiles are squares, like the logo's pixels */
+.pn-proc-icon {
+  border-radius: 6px;
+}
+/* The scroll line is a row of pixels that light up coral */
+.pn-proc-thread {
+  height: 4px;
+  top: 54px;
+  background: repeating-linear-gradient(to right, var(--night-line) 0 4px, transparent 4px 12px);
+}
+.pn-proc-thread-fill {
+  inset: 0 auto 0 0;
+  width: 100%;
+  background: repeating-linear-gradient(to right, var(--accent) 0 4px, transparent 4px 12px);
+}
+
+
+/* FAQ toggle: a pixel plus that turns into a pixel × */
+.pixel-plus {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.45s var(--ease-out-quint);
+}
+.pixel-plus i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  transition: background-color 0.3s ease;
+}
+.pixel-plus i:nth-child(1) { left: 6px; top: 0; }
+.pixel-plus i:nth-child(2) { left: 0; top: 6px; }
+.pixel-plus i:nth-child(3) { left: 6px; top: 6px; }
+.pixel-plus i:nth-child(4) { left: 12px; top: 6px; }
+.pixel-plus i:nth-child(5) { left: 6px; top: 12px; }
+details[open] .pixel-plus i {
+  background: var(--accent);
+}
+summary:hover .pixel-plus i:nth-child(3) {
+  background: var(--accent);
+}
+
+/* Footer: a faint pixel field behind the big logo */
+.pixel-field {
+  position: relative;
+}
+.pixel-field::before {
+  content: "";
+  position: absolute;
+  inset: -24px -12px;
+  background-image: linear-gradient(rgb(246 244 238 / 0.08) 0 0);
+  background-size: 3px 3px;
+  -webkit-mask:
+    repeating-linear-gradient(to right, #000 0 3px, transparent 3px 16px),
+    repeating-linear-gradient(to bottom, #000 0 3px, transparent 3px 16px);
+  -webkit-mask-composite: source-in;
+  mask:
+    repeating-linear-gradient(to right, #000 0 3px, transparent 3px 16px) intersect,
+    repeating-linear-gradient(to bottom, #000 0 3px, transparent 3px 16px);
+  pointer-events: none;
+}
+.pixel-field > * {
+  position: relative;
 }

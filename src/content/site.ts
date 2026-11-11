@@ -39,9 +39,9 @@ export const whatIf = [
 ];
 
 export const results = [
-  { text: "MoneyFlow cut user errors by 47% after its redesign", href: "/case-studies/moneyflow" },
-  { text: "CaseIQ legal teams now move 32% faster through daily workflows", href: "/case-studies/caseiq" },
-  { text: "Task efficiency up 36% across both products", href: "/case-studies" },
+  { figure: "−47%", client: "MoneyFlow", text: "fewer user errors after the redesign", href: "/case-studies/moneyflow" },
+  { figure: "+32%", client: "CaseIQ", text: "faster daily workflows for legal teams", href: "/case-studies/caseiq" },
+  { figure: "+36%", client: "Both products", text: "task efficiency across the redesigns", href: "/case-studies" },
 ];
 
 export const stats = [
@@ -56,16 +56,19 @@ export const testimonials = [
     quote: "Saved over 400 hours per month on support.",
     name: "Himaad",
     role: "Head of Design, Pixelnest",
+    metric: { label: "Support hours saved", value: 400, format: "hrs", note: "per month", trend: [60, 90, 140, 180, 230, 290, 340, 400] },
   },
   {
     quote: "Doubled our conversion rate in 3 months.",
     name: "Sarah M.",
     role: "Marketing Manager, Mandala",
+    metric: { label: "Conversion rate", value: 2, format: "x", note: "in 3 months", trend: [100, 104, 112, 125, 140, 158, 181, 200] },
   },
   {
     quote: "50% reduction in operational costs.",
     name: "John D.",
     role: "CEO, AI Agent",
+    metric: { label: "Operational costs", value: 50, format: "-%", note: "year over year", trend: [100, 96, 90, 82, 74, 64, 56, 50] },
   },
 ];
 
@@ -112,21 +115,25 @@ export const steps = [
     step: "01",
     title: "Discover",
     body: "We learn your business, users and constraints, and audit what exists today.",
+    outputs: ["Interviews", "UX audit"],
   },
   {
     step: "02",
     title: "Define",
     body: "Journeys, information architecture and a plan with clear milestones and scope.",
+    outputs: ["User flows", "Roadmap"],
   },
   {
     step: "03",
     title: "Design",
     body: "Wireframes to high-fidelity UI and a design system that scales with the product.",
+    outputs: ["UI design", "Design system"],
   },
   {
     step: "04",
     title: "Test & hand off",
     body: "Prototypes, usability testing and developer-ready specs, then we stay on to iterate.",
+    outputs: ["Prototype", "Dev specs"],
   },
 ];
 

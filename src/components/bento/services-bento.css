@@ -1,0 +1,582 @@
+/* Pixelnest services bento, in the site's own language: paper ground, a
+   ruled grid of hairlines, light serif titles, ink controls and one coral
+   accent. Everything nests under .pn-bento. */
+.pn-bento {
+  --pad: 32px;
+  --rule: rgb(22 22 19 / 0.16);
+  --paper: #f6f4ee;
+  --card: #ffffff;
+  --ink: #161613;
+  --ink-2: #74716a;
+  --line: #ece9e2;
+  --accent: #f0532f;
+  container-type: inline-size;
+
+  /* ---- A ruled grid: no gaps, hairlines between cells ---- */
+  & .pb-grid {
+    display: grid;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 420px 300px 360px 330px 350px 300px 350px;
+    grid-template-areas: "saas" "stat" "mobile" "system" "brand" "tools" "audit";
+  }
+
+  @container (min-width: 620px) {
+    & .pb-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: 440px 360px 350px 340px;
+      grid-template-areas: "saas saas" "stat mobile" "system brand" "tools audit";
+    }
+  }
+
+  @container (min-width: 960px) {
+    & .pb-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: 450px 360px 340px;
+      grid-template-areas: "saas saas stat" "mobile system brand" "tools tools audit";
+    }
+  }
+
+  @container (max-width: 619px) {
+    & .pb-grid {
+      --pad: 22px;
+    }
+  }
+
+  & .pb-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--paper);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    transition: background-color 0.5s ease;
+  }
+
+  /* Subtle hover: the cell warms a touch; its picture grows from the
+     bottom edge so a bled window never lifts off it */
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    & .pb-tile:hover {
+      background: #f1eee6;
+    }
+    & .pb-tile .pb-picture {
+      transform-origin: 50% 100%;
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    & .pb-tile:hover .pb-picture {
+      transform: scale(1.02);
+    }
+  }
+
+  & .pb-tile--saas { grid-area: saas; }
+  & .pb-tile--stat { grid-area: stat; background: var(--ink); }
+  & .pb-tile--mobile { grid-area: mobile; }
+  & .pb-tile--system { grid-area: system; }
+  & .pb-tile--brand { grid-area: brand; }
+  & .pb-tile--tools { grid-area: tools; }
+  & .pb-tile--audit { grid-area: audit; }
+
+  /* ---- Copy: a numeral, a light serif title, one gray line ---- */
+  & .pb-copy {
+    position: relative;
+    z-index: 1;
+    flex: none;
+    padding: var(--pad) var(--pad) 0;
+  }
+  & .pb-n {
+    position: absolute;
+    top: calc(var(--pad) + 6px);
+    right: var(--pad);
+    font-size: 13px;
+    line-height: 1;
+    color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+  }
+  & .pb-title {
+    margin: 0;
+    font-family: var(--font-newsreader), Georgia, serif;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  & .pb-body {
+    max-width: 340px;
+    margin: 10px 0 0;
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 300;
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  & .pb-picture {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: var(--pad);
+  }
+  & .pb-stage .ss-stage {
+    overflow: hidden;
+    background: transparent;
+    --ss-font: var(--font-geist), system-ui, sans-serif;
+  }
+
+  /* Quiet, warm status pills */
+  & .pb-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 11px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  & .pb-pill[data-tone="success"] {
+    background: #e8efe6;
+    color: #3d6b3a;
+  }
+  & .pb-pill[data-tone="danger"] {
+    background: #fbe6df;
+    color: #b8401f;
+  }
+  & .pb-pill[data-tone="warning"] {
+    background: #f4ecdc;
+    color: #8a6420;
+  }
+
+  /* Surfaces: white on paper, a hairline and a long faint fall */
+  & .pb-window,
+  & .pb-send,
+  & .pb-audit,
+  & .pb-token,
+  & .pb-swatch,
+  & .pb-tool {
+    box-shadow:
+      0 0 0 1px rgb(22 22 19 / 0.07),
+      0 18px 40px -28px rgb(22 22 19 / 0.28);
+  }
+
+  /* ---- SaaS (hero): a window inset left, off the right and bottom ---- */
+
+  & .pb-tile--saas .pb-picture {
+    margin-top: 0;
+  }
+  & .pb-window {
+    position: absolute;
+    top: var(--pad);
+    left: var(--pad);
+    /* Inset a gutter on both sides, off the bottom only */
+    width: calc(100% - 2 * var(--pad));
+    height: calc(100% + 60px);
+    --ss-canvas: #fff;
+  }
+  & .pb-window--compact {
+    width: calc(100% - 2 * var(--pad));
+  }
+  & .pb-side {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 46px 12px 0;
+  }
+  & .pb-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 8px;
+  }
+  & .pb-nav[data-active] {
+    background: #f1eee8;
+  }
+  & .pb-dash {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 16px;
+    background: #fff;
+  }
+  & .pb-dash-grid {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
+  }
+  & .pb-window--compact .pb-dash-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  & .pb-card {
+    box-sizing: border-box;
+    padding: 14px 16px 12px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 0 0 1px var(--line);
+  }
+  & .pb-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  & .pb-card-label {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--ink-2);
+  }
+  & .pb-card-value {
+    margin-top: 6px;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  & .pb-chart {
+    display: block;
+    margin-top: 10px;
+    --ss-accent: var(--accent);
+  }
+  & .pb-card--side {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+  & .pb-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 80px;
+    margin-top: auto;
+  }
+  & .pb-bars-col {
+    flex: 1;
+    border-radius: 3px 3px 1px 1px;
+    background: #ebe8e1;
+    transition: height 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  & .pb-bars-col:nth-child(6) {
+    background: var(--ink);
+  }
+  & .pb-dash-rows {
+    margin-top: 12px;
+  }
+  & .pb-dash-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 38px;
+    border-top: 1px solid var(--line);
+  }
+  & .pb-dash-row-end {
+    margin-left: auto;
+  }
+
+  /* ---- Stat: the one dark cell, serif figure under its lead ---- */
+
+  & .pb-stat {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100%;
+    padding: var(--pad);
+  }
+  & .pb-stat-lead {
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 300;
+    color: #a3a09a;
+  }
+  & .pb-stat-number {
+    margin-top: 16px;
+    font-family: var(--font-newsreader), Georgia, serif;
+    font-weight: 300;
+    font-size: 112px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: #f6f4ee;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  & .pb-stat-label {
+    max-width: 240px;
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 300;
+    color: #a3a09a;
+  }
+
+  /* ---- Cards that start under the copy and run off the bottom ---- */
+
+  & .pb-send,
+  & .pb-audit {
+    position: absolute;
+    top: 0;
+    left: var(--pad);
+    right: var(--pad);
+    min-height: calc(100% + 48px);
+    box-sizing: border-box;
+    border-radius: 16px;
+    background: var(--card);
+  }
+
+  & .pb-send {
+    padding: 16px;
+  }
+  & .pb-send-who {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+  & .pb-send-name {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19px;
+    color: var(--ink);
+  }
+  & .pb-send-amount {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  & .pb-send-detail {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    height: 36px;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  & .pb-send-detail span:last-child {
+    color: var(--ink);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  /* The ink button: its label changes, its color doesn't */
+  & .pb-btn {
+    display: grid;
+    place-items: center;
+    height: 44px;
+    margin-top: 12px;
+    border-radius: 12px;
+    background: var(--ink);
+    color: #f6f4ee;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  & .pb-btn-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 20px;
+    min-width: 52px;
+  }
+  & .pb-send-more {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 44px;
+    margin-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ---- Design system: tokens wired into a button, centered ---- */
+
+  & .pb-system {
+    position: absolute;
+    inset: 0 var(--pad) var(--pad);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  & .pb-tokens {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  & .pb-token {
+    box-sizing: border-box;
+    height: 34px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    border-radius: 8px;
+    background: var(--card);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--ink);
+  }
+  & .pb-preview {
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: 124px;
+    height: 40px;
+    flex: none;
+    border-radius: 2px;
+    box-shadow: inset 0 0 0 1px #c9c5bc;
+    color: #8c8982;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      background-color 0.5s ease 0.7s,
+      color 0.5s ease 0.7s,
+      border-radius 0.5s ease 0.7s,
+      box-shadow 0.5s ease 0.7s;
+  }
+  & .pb-preview[data-on] {
+    background: var(--ink);
+    color: #f6f4ee;
+    border-radius: 999px;
+    box-shadow: 0 10px 24px -12px rgb(22 22 19 / 0.5);
+  }
+  & .pb-line {
+    --ss-accent: var(--accent);
+  }
+
+  /* ---- Branding: a type specimen card, centered in the slot ---- */
+
+  & .pb-specimen {
+    position: absolute;
+    left: 50%;
+    top: calc((100% - var(--pad)) / 2);
+    translate: -50% -50%;
+    box-sizing: border-box;
+    width: min(260px, calc(100% - 2 * var(--pad)));
+    padding: 18px 20px 16px;
+    border-radius: 6px;
+    background: var(--card);
+    box-shadow:
+      0 0 0 1px rgb(22 22 19 / 0.07),
+      0 18px 40px -28px rgb(22 22 19 / 0.28);
+  }
+  & .pb-specimen-glyph {
+    display: block;
+    font-family: var(--font-newsreader), Georgia, serif;
+    font-size: 104px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    font-weight: 200;
+    transition: font-weight 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+  }
+  & .pb-specimen[data-on] .pb-specimen-glyph {
+    font-weight: 500;
+  }
+  & .pb-specimen-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  & .pb-specimen-name {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--ink-2);
+  }
+  & .pb-specimen-dots {
+    display: flex;
+    gap: 6px;
+  }
+  & .pb-specimen-dots i {
+    display: block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgb(22 22 19 / 0.12);
+  }
+
+  /* ---- Tools: grayscale marks that take their color on hover ---- */
+
+  & .pb-tools {
+    position: absolute;
+    top: calc((100% - var(--pad)) / 2);
+    translate: 0 -50%;
+    left: var(--pad);
+    display: flex;
+  }
+  & .pb-tile--tools .pb-stage .ss-stage {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 140px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 140px), transparent);
+  }
+  & .pb-tool {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 112px;
+    height: 112px;
+    border-radius: 24px;
+    background: var(--card);
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--i) * 70ms);
+  }
+  & .pb-tools[data-on] .pb-tool {
+    opacity: 1;
+    transform: none;
+  }
+  & .pb-tool img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    filter: grayscale(1) contrast(1.1);
+    opacity: 0.75;
+    transition:
+      filter 0.5s ease,
+      opacity 0.5s ease;
+  }
+  & .pb-tile--tools:hover .pb-tool img {
+    filter: none;
+    opacity: 1;
+  }
+
+  /* ---- UX audit: a findings list ---- */
+
+  & .pb-audit {
+    padding: 4px 16px;
+  }
+  & .pb-audit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: 48px;
+  }
+  & .pb-audit-row + .pb-audit-row {
+    border-top: 1px solid var(--line);
+  }
+  & .pb-audit-name {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  & .pb-audit-row .ss-states {
+    flex: none;
+  }
+}

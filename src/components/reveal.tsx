@@ -44,26 +44,18 @@ export function Reveal({
   );
 }
 
-// Coral hand-drawn ellipse around a word.
-export function Circled({ children }: { children: React.ReactNode }) {
+// A word shown as a selected layer in a design tool: a thin coral frame with
+// four square handles. It draws in when its Reveal parent comes into view.
+export function Selected({ children }: { children: React.ReactNode }) {
   return (
-    <span className="relative inline-block whitespace-nowrap">
+    <span className="selected relative inline-block whitespace-nowrap">
       {children}
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 300 110"
-        preserveAspectRatio="none"
-        className="scribble pointer-events-none absolute -left-[8%] -top-[18%] h-[136%] w-[116%] overflow-visible"
-      >
-        <path
-          pathLength={1}
-          d="M240 14C190 2 92 4 44 20 8 32-2 62 22 82c34 28 152 30 222 14 44-10 60-40 34-62C252 12 180 6 120 10"
-          fill="none"
-          stroke="var(--accent)"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-      </svg>
+      <span aria-hidden="true" className="selected-frame">
+        <i data-c="tl" />
+        <i data-c="tr" />
+        <i data-c="bl" />
+        <i data-c="br" />
+      </span>
     </span>
   );
 }

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored Stageshow kit (copied from the skill, kept as-is)
+    "src/stageshow/kit/**",
   ]),
 ]);
 
