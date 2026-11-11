@@ -526,15 +526,13 @@
     height: 112px;
     border-radius: 24px;
     background: var(--card);
-    opacity: 0;
-    transform: translateY(14px);
-    transition:
-      opacity 0.6s ease,
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Always visible: the beat is only a small rise, so a reset stage
+       (scrolled past mid-play) never shows an empty tile */
+    transform: translateY(10px);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     transition-delay: calc(var(--i) * 70ms);
   }
   & .pb-tools[data-on] .pb-tool {
-    opacity: 1;
     transform: none;
   }
   & .pb-tool img {

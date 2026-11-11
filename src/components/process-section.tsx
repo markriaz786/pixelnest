@@ -17,7 +17,7 @@ function Stat({ value, label, delay }: { value: string; label: string; delay: nu
   const suffix = value.replace(String(n), "");
   return (
     <div ref={ref} className="pn-proc-stat">
-      <p className="display text-[64px] leading-none sm:text-[84px]">
+      <p className="display whitespace-nowrap text-[52px] leading-none sm:text-[84px]">
         <Count value={seen || reduce ? n : 0} duration={1100 + delay} />
         {suffix}
       </p>
