@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pixelnest Solutions website
 
-## Getting Started
+Agency site for Pixelnest Solutions, built with Next.js 16, Tailwind CSS 4, Motion and GSAP. Deploys on Vercel.
 
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where things live
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/content/site.ts`: contact details, nav, services, process, FAQ, testimonials, stats
+- `src/content/work.ts`: case studies (text, images, results)
+- `public/images/work/`: case study images
+- `public/brand/`: logo files (`logo-dark.png` for light backgrounds, `logo-light.png` for dark, `logo-mark.png`, `logo-3d.png`)
+- `src/components/motion/`: scroll and motion effects (parallax images, scroll-filled text, 3D logo tilt, progress bar)
 
-## Learn More
+To add a case study, add an entry to `caseStudies` in `src/content/work.ts` and put its images in `public/images/work/`. Set `hasPage: false` to show it in the grid without a detail page.
 
-To learn more about Next.js, take a look at the following resources:
+## Before launch
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Add the real social profile links in `src/content/site.ts` (empty links are hidden).
+- Set `NEXT_PUBLIC_SITE_URL` in Vercel once a custom domain is connected (used for SEO tags and the sitemap).
+- The contact form opens the visitor's email app. Connect a form service if you want submissions stored.
+- Privacy Policy and Terms are short drafts; have them reviewed.

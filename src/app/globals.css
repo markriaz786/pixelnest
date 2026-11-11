@@ -1,26 +1,170 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f6f4ee;
+  --paper-2: #ecE9e1;
+  --white: #ffffff;
+  --ink: #161613;
+  --ink-2: #3b3a36;
+  --muted: #828282;
+  --line: rgb(22 22 19 / 0.18);
+  --accent: #f0532f;
+  --night: #161613;
+  --night-line: rgb(246 244 238 / 0.18);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-night: var(--night);
+  --color-night-line: var(--night-line);
+  --font-sans: var(--font-geist);
+  --font-serif: var(--font-newsreader);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Content column: 1216px wide on desktop, side padding grows with the screen */
+@utility site-wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1376px;
+  padding-inline: clamp(20px, 5vw, 80px);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist), Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Headline serif */
+.display {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-weight: 300;
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+}
+
+/* Small uppercase label */
+.label {
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Scroll reveal: hidden state needs the `js` class, so no-JS still shows content */
+.js .reveal {
+  opacity: 0.08;
+  transform: translate3d(0, 14px, 0);
+  transition:
+    opacity 1s var(--ease-out-quint),
+    transform 1s var(--ease-out-quint);
+}
+.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hand-drawn circle */
+.scribble path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.3s 0.35s var(--ease-out-quint);
+}
+.is-in .scribble path {
+  stroke-dashoffset: 0;
+}
+html:not(.js) .scribble path {
+  stroke-dashoffset: 0;
+}
+
+/* Link with an underline that draws in */
+.link-line {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.5s var(--ease-out-quint);
+}
+.link-line:hover {
+  background-size: 0% 1px;
+  background-position: 100% 100%;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotate(-4deg);
+  }
+  50% {
+    transform: translate3d(-50%, calc(-50% - 14px), 0) rotate(3deg);
+  }
+}
+.float {
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-in {
+  animation: fade-in 0.7s var(--ease-out-quint);
+}
+
+/* FAQ disclosure */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-icon {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .scribble path {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .float,
+  .fade-in {
+    animation: none;
+  }
 }
