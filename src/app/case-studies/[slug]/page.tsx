@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { CtaCard } from "@/components/cta-card";
 import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { ScrubText } from "@/components/motion/scrub-text";
@@ -49,7 +50,7 @@ function Figure({ shot, preload = false }: { shot: Shot; preload?: boolean }) {
 function Block({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <section className="site-wrap py-[80px] sm:py-[100px]">
-      <Reveal className="grid gap-8 md:grid-cols-[336px_1fr] md:gap-[170px]">
+      <Reveal className="grid gap-8 lg:grid-cols-[300px_1fr] lg:gap-[120px] xl:grid-cols-[336px_1fr] xl:gap-[170px]">
         <h2 className="label pt-2">{label}</h2>
         <div>{children}</div>
       </Reveal>
@@ -59,7 +60,17 @@ function Block({ label, children }: { label: string; children: React.ReactNode }
 
 const lead = "text-[22px] font-light leading-[1.3] sm:text-[24px]";
 
-export default async function CaseStudyPage({ params }: PageProps<"/case-studies/[slug]">) {
+// The page reads its slug inside <Suspense>, so client navigations to it stay
+// instant (Cache Components). Both case studies are still prerendered.
+export default function CaseStudyPage({ params }: PageProps<"/case-studies/[slug]">) {
+  return (
+    <Suspense fallback={<div className="min-h-dvh" />}>
+      <CaseStudy params={params} />
+    </Suspense>
+  );
+}
+
+async function CaseStudy({ params }: { params: PageProps<"/case-studies/[slug]">["params"] }) {
   const { slug } = await params;
   const study = getCaseStudy(slug);
   if (!study || !study.hasPage) notFound();

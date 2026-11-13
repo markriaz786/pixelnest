@@ -1,110 +1,166 @@
-/* Pixelnest services bento, in the site's own language: paper ground, a
-   ruled grid of hairlines, light serif titles, ink controls and one coral
-   accent. Everything nests under .pn-bento. */
+/* Pixelnest services bento: rounded tiles on a gap, warm grounds, one coral
+   accent, ink controls. Everything nests under .pn-bento. */
 .pn-bento {
   --pad: 32px;
-  --rule: rgb(22 22 19 / 0.16);
-  --paper: #f6f4ee;
-  --card: #ffffff;
+  --gap: 16px;
+  --tile: #fbfaf6;
+  --sand: #ede6d6;
   --ink: #161613;
   --ink-2: #74716a;
   --line: #ece9e2;
   --accent: #f0532f;
+  --radius: 6px;
   container-type: inline-size;
 
-  /* ---- A ruled grid: no gaps, hairlines between cells ---- */
   & .pb-grid {
     display: grid;
-    border-top: 1px solid var(--rule);
-    border-left: 1px solid var(--rule);
+    gap: var(--gap);
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 420px 300px 360px 330px 350px 300px 350px;
-    grid-template-areas: "saas" "stat" "mobile" "system" "brand" "tools" "audit";
+    grid-template-rows: 470px 460px 520px 470px 470px 460px 480px;
+    grid-template-areas: "product" "stat" "systems" "research" "brand" "web" "audits";
   }
 
-  @container (min-width: 620px) {
+  @container (min-width: 640px) {
     & .pb-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: 440px 360px 350px 340px;
-      grid-template-areas: "saas saas" "stat mobile" "system brand" "tools audit";
+      grid-template-rows: 600px 520px 520px 560px 480px;
+      grid-template-areas: "product product" "stat systems" "research brand" "web web" "audits audits";
     }
   }
 
   @container (min-width: 960px) {
     & .pb-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      grid-template-rows: 450px 360px 340px;
-      grid-template-areas: "saas saas stat" "mobile system brand" "tools tools audit";
+      grid-template-rows: 620px 540px 560px;
+      grid-template-areas: "product product stat" "systems research brand" "web web audits";
     }
   }
 
-  @container (max-width: 619px) {
+  @container (max-width: 639px) {
     & .pb-grid {
       --pad: 22px;
     }
   }
+
+  /* ---- The tile: a picture on its own ground, a white copy panel below ---- */
 
   & .pb-tile {
     position: relative;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--paper);
-    border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    transition: background-color 0.5s ease;
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: 0 0 0 1px rgb(22 22 19 / 0.08);
+    transition:
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
-
-  /* Subtle hover: the cell warms a touch; its picture grows from the
-     bottom edge so a bled window never lifts off it */
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     & .pb-tile:hover {
-      background: #f1eee6;
+      transform: translateY(-3px);
+      box-shadow:
+        0 0 0 1px rgb(22 22 19 / 0.08),
+        0 28px 50px -30px rgb(22 22 19 / 0.4);
     }
-    & .pb-tile .pb-picture {
-      transform-origin: 50% 100%;
-      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    & .pb-tile .pb-picture > .ss-fit {
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    & .pb-tile:hover .pb-picture {
-      transform: scale(1.02);
+    & .pb-tile:hover .pb-picture > .ss-fit {
+      transform: scale(1.015);
     }
   }
 
-  & .pb-tile--saas { grid-area: saas; }
-  & .pb-tile--stat { grid-area: stat; background: var(--ink); }
-  & .pb-tile--mobile { grid-area: mobile; }
-  & .pb-tile--system { grid-area: system; }
-  & .pb-tile--brand { grid-area: brand; }
-  & .pb-tile--tools { grid-area: tools; }
-  & .pb-tile--audit { grid-area: audit; }
+  /* Grounds: each picture sits on its own field of color */
+  & .pb-picture[data-ground="pixels"] {
+    background: #1f1d1b;
+  }
+  & .pb-picture[data-ground="dots"] {
+    background-color: #f1ede4;
+    background-image: radial-gradient(rgb(22 22 19 / 0.16) 1px, transparent 1.2px);
+    background-size: 16px 16px;
+    background-position: 8px 8px;
+  }
+  & .pb-picture[data-ground="blush"] {
+    background: #f2e2d8;
+  }
+  & .pb-picture[data-ground="stone"] {
+    background: #ece6dc;
+  }
+  & .pb-picture[data-ground="butter"] {
+    background: #f3ebd5;
+  }
+  & .pb-picture[data-ground="dusk"] {
+    background:
+      radial-gradient(70% 90% at 100% 0%, #d9dde6 0%, transparent 70%),
+      radial-gradient(60% 80% at 0% 100%, #ece4dc 0%, transparent 70%),
+      #eeece8;
+  }
 
-  /* ---- Copy: a numeral, a light serif title, one gray line ---- */
+  & .pb-pixels {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    gap: 2px;
+    align-content: start;
+  }
+  & .pb-pixels i {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 1px;
+  }
+
+  /* Crop marks at the picture's corners */
+  & .pb-mark {
+    position: absolute;
+    z-index: 6;
+    width: 9px;
+    height: 9px;
+    pointer-events: none;
+    border-color: rgb(22 22 19 / 0.35);
+    border-style: solid;
+    border-width: 0;
+  }
+  & .pb-picture[data-ground="pixels"] .pb-mark {
+    border-color: rgb(246 244 238 / 0.5);
+  }
+  & .pb-mark[data-at="tl"] { top: 12px; left: 12px; border-top-width: 1.5px; border-left-width: 1.5px; border-color: var(--accent); }
+  & .pb-mark[data-at="tr"] { top: 12px; right: 12px; border-top-width: 1.5px; border-right-width: 1.5px; }
+  & .pb-mark[data-at="bl"] { bottom: 12px; left: 12px; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+  & .pb-mark[data-at="br"] { bottom: 12px; right: 12px; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+  & .pb-tile--product { grid-area: product; }
+  /* A deep ember ground: warm, and dark enough for cream text */
+  & .pb-tile--stat { grid-area: stat; background: #1f1d1b; box-shadow: none; }
+  & .pb-tile--systems { grid-area: systems; }
+  & .pb-tile--research { grid-area: research; }
+  & .pb-tile--brand { grid-area: brand; }
+  & .pb-tile--web { grid-area: web; }
+  & .pb-tile--audits { grid-area: audits; }
+
+  /* ---- Copy: a light serif title and one gray line ---- */
   & .pb-copy {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     flex: none;
-    padding: var(--pad) var(--pad) 0;
-  }
-  & .pb-n {
-    position: absolute;
-    top: calc(var(--pad) + 6px);
-    right: var(--pad);
-    font-size: 13px;
-    line-height: 1;
-    color: var(--ink-2);
-    font-variant-numeric: tabular-nums;
+    box-sizing: border-box;
+    height: 156px;
+    padding: 24px var(--pad) 28px;
+    background: #fff;
+    border-top: 1px solid rgb(22 22 19 / 0.06);
   }
   & .pb-title {
     margin: 0;
     font-family: var(--font-newsreader), Georgia, serif;
-    font-weight: 300;
-    font-size: 32px;
+    font-weight: 480;
+    font-size: 30px;
     line-height: 1.05;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     color: var(--ink);
   }
   & .pb-body {
-    max-width: 340px;
+    max-width: 360px;
     margin: 10px 0 0;
     font-size: 15px;
     line-height: 1.5;
@@ -112,72 +168,44 @@
     color: var(--ink-2);
     text-wrap: pretty;
   }
+  & .pb-tile--product .pb-body,
+  & .pb-tile--web .pb-body {
+    max-width: 440px;
+  }
 
   & .pb-picture {
     position: relative;
     flex: 1 1 auto;
     min-height: 0;
-    margin-top: var(--pad);
+    overflow: hidden;
   }
   & .pb-stage .ss-stage {
     overflow: hidden;
     background: transparent;
     --ss-font: var(--font-geist), system-ui, sans-serif;
+    --ss-accent: var(--accent);
   }
 
-  /* Quiet, warm status pills */
-  & .pb-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    height: 22px;
-    padding: 0 9px;
-    border-radius: 11px;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  & .pb-pill[data-tone="success"] {
-    background: #e8efe6;
-    color: #3d6b3a;
-  }
-  & .pb-pill[data-tone="danger"] {
-    background: #fbe6df;
-    color: #b8401f;
-  }
-  & .pb-pill[data-tone="warning"] {
-    background: #f4ecdc;
-    color: #8a6420;
-  }
-
-  /* Surfaces: white on paper, a hairline and a long faint fall */
+  /* Surfaces: white on the ground, a hairline and a long faint fall */
   & .pb-window,
-  & .pb-send,
-  & .pb-audit,
-  & .pb-token,
-  & .pb-swatch,
-  & .pb-tool {
+  & .pb-editor,
+  & .pb-pill,
+  & .pb-note-card,
+  & .pb-guide-unused,
+  & .pb-app {
     box-shadow:
       0 0 0 1px rgb(22 22 19 / 0.07),
-      0 18px 40px -28px rgb(22 22 19 / 0.28);
+      0 18px 40px -26px rgb(22 22 19 / 0.32);
   }
 
-  /* ---- SaaS (hero): a window inset left, off the right and bottom ---- */
+  /* ---- Product design: dashboard + phone ---- */
 
-  & .pb-tile--saas .pb-picture {
-    margin-top: 0;
-  }
   & .pb-window {
     position: absolute;
-    top: var(--pad);
+    top: 26px;
     left: var(--pad);
-    /* Inset a gutter on both sides, off the bottom only */
-    width: calc(100% - 2 * var(--pad));
-    height: calc(100% + 60px);
+    height: calc(100% + 40px);
     --ss-canvas: #fff;
-  }
-  & .pb-window--compact {
-    width: calc(100% - 2 * var(--pad));
   }
   & .pb-side {
     display: flex;
@@ -202,26 +230,11 @@
     padding: 16px;
     background: #fff;
   }
-  & .pb-dash-grid {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 12px;
-  }
-  & .pb-window--compact .pb-dash-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
   & .pb-card {
     box-sizing: border-box;
     padding: 14px 16px 12px;
     border-radius: 12px;
-    background: #fff;
     box-shadow: 0 0 0 1px var(--line);
-  }
-  & .pb-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
   }
   & .pb-card-label {
     font-size: 13px;
@@ -230,7 +243,7 @@
   }
   & .pb-card-value {
     margin-top: 6px;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 600;
     letter-spacing: -0.03em;
     line-height: 1.1;
@@ -240,32 +253,6 @@
   & .pb-chart {
     display: block;
     margin-top: 10px;
-    --ss-accent: var(--accent);
-  }
-  & .pb-card--side {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-width: 0;
-  }
-  & .pb-bars {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    height: 80px;
-    margin-top: auto;
-  }
-  & .pb-bars-col {
-    flex: 1;
-    border-radius: 3px 3px 1px 1px;
-    background: #ebe8e1;
-    transition: height 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  & .pb-bars-col:nth-child(6) {
-    background: var(--ink);
-  }
-  & .pb-dash-rows {
-    margin-top: 12px;
   }
   & .pb-dash-row {
     display: flex;
@@ -274,30 +261,81 @@
     height: 38px;
     border-top: 1px solid var(--line);
   }
+  & .pb-dash-row:first-of-type {
+    margin-top: 12px;
+  }
   & .pb-dash-row-end {
     margin-left: auto;
   }
+  & .pb-phone {
+    position: absolute;
+    top: 56px;
+  }
+  /* The notification drops in under the clock */
+  & .pb-banner {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+    transition:
+      opacity 0.4s ease,
+      transform 0.7s cubic-bezier(0.34, 1.3, 0.64, 1);
+  }
+  & .pb-banner[data-on] {
+    opacity: 1;
+    transform: none;
+  }
 
-  /* ---- Stat: the one dark cell, serif figure under its lead ---- */
+  /* ---- Stat: a pixel bar chart over the figure, on charcoal ---- */
 
+  /* Dial at the top, the figure group at the foot */
   & .pb-stat {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
     box-sizing: border-box;
     height: 100%;
     padding: var(--pad);
+    color: #f6f4ee;
   }
-  & .pb-stat-lead {
+  /* Ten columns sharing the tile's width; cells stay square */
+  & .pb-dial {
+    position: relative;
+    width: 160px;
+    height: 160px;
+  }
+  & .pb-dial svg {
+    display: block;
+  }
+  & .pb-tick {
+    stroke: rgb(246 244 238 / 0.18);
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: stroke 0.25s ease;
+  }
+  & .pb-stat[data-on] .pb-tick[data-lit] {
+    stroke: var(--accent);
+  }
+  & .pb-dial-icon {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #f6f4ee;
+  }
+  & .pb-stat-lead,
+  & .pb-stat-label {
+    display: block;
     font-size: 15px;
     line-height: 1.5;
     font-weight: 300;
-    color: #a3a09a;
+    color: rgb(246 244 238 / 0.7);
   }
   & .pb-stat-number {
-    margin-top: 16px;
+    display: block;
+    margin-top: 10px;
     font-family: var(--font-newsreader), Georgia, serif;
     font-weight: 300;
-    font-size: 112px;
+    font-size: 104px;
     line-height: 1;
     letter-spacing: -0.03em;
     color: #f6f4ee;
@@ -306,275 +344,665 @@
   }
   & .pb-stat-label {
     max-width: 240px;
-    margin-top: 16px;
-    font-size: 15px;
-    line-height: 1.5;
-    font-weight: 300;
-    color: #a3a09a;
+    margin-top: 12px;
   }
 
-  /* ---- Cards that start under the copy and run off the bottom ---- */
+  /* ---- Design systems: pills and wires on the dot grid ---- */
 
-  & .pb-send,
-  & .pb-audit {
+  & .pb-wires {
     position: absolute;
-    top: 0;
-    left: var(--pad);
-    right: var(--pad);
-    min-height: calc(100% + 48px);
+    inset: 0;
+    overflow: visible;
+  }
+  & .pb-wire-base,
+  & .pb-wire {
+    fill: none;
+    stroke-width: 1.25;
+    stroke-linejoin: round;
+  }
+  & .pb-wire-base {
+    stroke: rgb(22 22 19 / 0.1);
+    stroke-dasharray: 2 4;
+  }
+  & .pb-wire {
+    stroke: var(--accent);
+  }
+  & .pb-pulse {
+    fill: var(--accent);
+  }
+  /* Placed by its center, so it sits exactly on its line */
+  & .pb-pill {
+    position: absolute;
+    translate: -50% 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  & .pb-pill:has(.pb-glyph) {
+    padding-left: 10px;
+  }
+  & .pb-pill[data-dark] {
+    padding: 0 16px;
+    background: var(--ink);
+    color: #f6f4ee;
+  }
+  & .pb-glyph {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 16px;
+    height: 16px;
+  }
+  & .pb-glyph--swatch {
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  & .pb-glyph--radius {
+    border-radius: 5px;
+    box-shadow: inset 0 0 0 1.5px var(--ink);
+  }
+  & .pb-glyph--type {
+    font-family: var(--font-newsreader), Georgia, serif;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  /* ---- UX research: notes and a cluster ---- */
+
+  & .pb-cluster {
+    position: absolute;
     box-sizing: border-box;
     border-radius: 16px;
-    background: var(--card);
+    border: 1px dashed rgb(240 83 47 / 0.45);
+    background: rgb(240 83 47 / 0.04);
   }
-
-  & .pb-send {
-    padding: 16px;
-  }
-  & .pb-send-who {
-    display: grid;
-    grid-template-columns: 36px minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    padding-bottom: 12px;
-  }
-  & .pb-send-name {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 19px;
-    color: var(--ink);
-  }
-  & .pb-send-amount {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--ink);
-    font-variant-numeric: tabular-nums;
-  }
-  & .pb-send-detail {
+  & .pb-cluster-head {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    right: 12px;
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    height: 36px;
     align-items: center;
-    border-top: 1px solid var(--line);
-    font-size: 13px;
-    color: var(--ink-2);
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    color: #b8401f;
   }
-  & .pb-send-detail span:last-child {
-    color: var(--ink);
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-  }
-  /* The ink button: its label changes, its color doesn't */
-  & .pb-btn {
+  & .pb-cluster-count {
     display: grid;
     place-items: center;
-    height: 44px;
-    margin-top: 12px;
-    border-radius: 12px;
-    background: var(--ink);
-    color: #f6f4ee;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  & .pb-btn-label {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
+    min-width: 22px;
     height: 20px;
-    min-width: 52px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: rgb(240 83 47 / 0.12);
+    font-variant-numeric: tabular-nums;
   }
-  & .pb-send-more {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 44px;
-    margin-top: 12px;
-    border-top: 1px solid var(--line);
-  }
-
-  /* ---- Design system: tokens wired into a button, centered ---- */
-
-  & .pb-system {
+  & .pb-cluster-note {
     position: absolute;
-    inset: 0 var(--pad) var(--pad);
+    left: 12px;
+    right: 12px;
+    box-sizing: border-box;
+    height: 38px;
+    padding: 0 12px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgb(22 22 19 / 0.06);
   }
-  & .pb-tokens {
+  & .pb-note-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-  }
-  & .pb-token {
-    box-sizing: border-box;
-    height: 34px;
-    padding: 0 12px;
-    display: inline-flex;
-    align-items: center;
-    width: max-content;
-    border-radius: 8px;
-    background: var(--card);
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 12px;
-    color: var(--ink);
-  }
-  & .pb-preview {
-    display: grid;
-    place-items: center;
-    box-sizing: border-box;
-    width: 124px;
-    height: 40px;
-    flex: none;
-    border-radius: 2px;
-    box-shadow: inset 0 0 0 1px #c9c5bc;
-    color: #8c8982;
-    background: transparent;
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
+    gap: 7px;
+    padding: 12px 12px 0;
+    border-radius: 12px;
+    background: #fff;
     transition:
-      background-color 0.5s ease 0.7s,
-      color 0.5s ease 0.7s,
-      border-radius 0.5s ease 0.7s,
-      box-shadow 0.5s ease 0.7s;
+      transform 1s cubic-bezier(0.45, 0, 0.25, 1),
+      box-shadow 0.3s ease,
+      scale 0.3s ease;
   }
-  & .pb-preview[data-on] {
-    background: var(--ink);
-    color: #f6f4ee;
-    border-radius: 999px;
-    box-shadow: 0 10px 24px -12px rgb(22 22 19 / 0.5);
-  }
-  & .pb-line {
-    --ss-accent: var(--accent);
-  }
-
-  /* ---- Branding: a type specimen card, centered in the slot ---- */
-
-  & .pb-specimen {
-    position: absolute;
-    left: 50%;
-    top: calc((100% - var(--pad)) / 2);
-    translate: -50% -50%;
-    box-sizing: border-box;
-    width: min(260px, calc(100% - 2 * var(--pad)));
-    padding: 18px 20px 16px;
-    border-radius: 6px;
-    background: var(--card);
+  & .pb-note-card[data-lifted] {
+    scale: 1.04;
     box-shadow:
       0 0 0 1px rgb(22 22 19 / 0.07),
-      0 18px 40px -28px rgb(22 22 19 / 0.28);
+      0 26px 40px -18px rgb(22 22 19 / 0.4);
   }
-  & .pb-specimen-glyph {
+  & .pb-note-title {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  & .pb-note-line {
     display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: #f6ddd2;
+  }
+
+  /* Teammates' cursors, their names riding them */
+  & .pb-peer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    pointer-events: none;
+    will-change: transform;
+    transition:
+      transform 1s cubic-bezier(0.45, 0, 0.25, 1),
+      opacity 0.5s ease;
+  }
+  /* Between loops a teammate isn't in the file: their cursor fades out */
+  & .pb-peer[data-away] {
+    opacity: 0;
+  }
+  & .pb-peer[data-slow] {
+    transition-duration: 1.15s;
+  }
+  & .pb-peer svg {
+    display: block;
+    margin: -1.5px 0 0 -1.5px;
+    filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.2));
+  }
+  & .pb-flag {
+    position: absolute;
+    top: 16px;
+    left: 11px;
+    padding: 3px 7px;
+    border-radius: 6px;
+    background: var(--who);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /* ---- Branding: a brand-guideline card ---- */
+
+  & .pb-guide {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    width: min(320px, calc(100% - 2 * var(--pad)));
+    height: 236px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow:
+      0 0 0 1px rgb(22 22 19 / 0.07),
+      0 18px 40px -26px rgb(22 22 19 / 0.32);
+  }
+  & .pb-guide-type {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 16px;
+  }
+  & .pb-guide-glyph {
     font-family: var(--font-newsreader), Georgia, serif;
-    font-size: 104px;
+    font-size: 88px;
     line-height: 1;
     letter-spacing: -0.03em;
     color: var(--ink);
     font-weight: 200;
     transition: font-weight 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
   }
-  & .pb-specimen[data-on] .pb-specimen-glyph {
+  & .pb-guide[data-on] .pb-guide-glyph {
     font-weight: 500;
   }
-  & .pb-specimen-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  & .pb-guide-roles {
+    display: grid;
     gap: 12px;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid var(--line);
+    margin: 0;
+    min-width: 0;
   }
-  & .pb-specimen-name {
-    font-size: 13px;
-    line-height: 18px;
+  & .pb-guide-roles dt {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     color: var(--ink-2);
   }
-  & .pb-specimen-dots {
-    display: flex;
-    gap: 6px;
+  & .pb-guide-roles dd {
+    margin: 2px 0 0;
+    color: var(--ink);
+    white-space: nowrap;
   }
-  & .pb-specimen-dots i {
-    display: block;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    box-shadow: inset 0 0 0 1px rgb(22 22 19 / 0.12);
+  & .pb-guide-serif {
+    font-family: var(--font-newsreader), Georgia, serif;
+    font-size: 20px;
+    line-height: 1.2;
   }
-
-  /* ---- Tools: grayscale marks that take their color on hover ---- */
-
-  & .pb-tools {
-    position: absolute;
-    top: calc((100% - var(--pad)) / 2);
-    translate: 0 -50%;
-    left: var(--pad);
-    display: flex;
+  & .pb-guide-sans {
+    font-family: var(--font-geist), system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.4;
   }
-  & .pb-tile--tools .pb-stage .ss-stage {
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 140px), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 140px), transparent);
-  }
-  & .pb-tool {
+  & .pb-guide-bands {
     display: grid;
-    place-items: center;
+    grid-template-columns: repeat(3, 1fr);
     flex: none;
-    width: 112px;
-    height: 112px;
-    border-radius: 24px;
-    background: var(--card);
-    /* Always visible: the beat is only a small rise, so a reset stage
-       (scrolled past mid-play) never shows an empty tile */
-    transform: translateY(10px);
-    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: calc(var(--i) * 70ms);
+    height: 84px;
+    align-items: end;
   }
-  & .pb-tools[data-on] .pb-tool {
+  & .pb-band {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2px;
+    height: 100%;
+    padding: 10px 16px;
+    transform-origin: bottom;
+    transform: scaleY(0);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(0.3s + var(--i) * 0.12s);
+  }
+  & .pb-guide[data-on] .pb-band {
     transform: none;
   }
-  & .pb-tool img {
-    width: 46px;
-    height: 46px;
-    object-fit: contain;
-    filter: grayscale(1) contrast(1.1);
-    opacity: 0.75;
-    transition:
-      filter 0.5s ease,
-      opacity 0.5s ease;
-  }
-  & .pb-tile--tools:hover .pb-tool img {
-    filter: none;
-    opacity: 1;
-  }
-
-  /* ---- UX audit: a findings list ---- */
-
-  & .pb-audit {
-    padding: 4px 16px;
-  }
-  & .pb-audit-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    height: 48px;
-  }
-  & .pb-audit-row + .pb-audit-row {
-    border-top: 1px solid var(--line);
-  }
-  & .pb-audit-name {
-    min-width: 0;
-    overflow: hidden;
+  & .pb-band-name {
     font-size: 13px;
     font-weight: 500;
+    line-height: 1.2;
+  }
+  & .pb-band-hex {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    opacity: 0.75;
+  }
+
+  /* ---- Websites & MVPs: an editor and floating app tiles ---- */
+
+  & .pb-editor {
+    position: absolute;
+    top: 26px;
+    left: var(--pad);
+    height: calc(100% + 24px);
+    --ss-canvas: #fff;
+  }
+  & .pb-code {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 18px 8px 0;
+    background: #fff;
+    font-size: 13px;
+  }
+  & .pb-app {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    border-radius: 20px;
+    background: #fff;
+    rotate: var(--r);
+    animation: pb-float 7s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -2.3s);
+  }
+  & .pb-app img {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+  }
+
+  /* ---- UX audits: the report and its sticky note ---- */
+
+  & .pb-doc {
+    position: absolute;
+    box-sizing: border-box;
+    padding: 18px 18px 16px;
+    border-radius: 6px;
+    background: #fff;
+    rotate: -1.5deg;
+    box-shadow:
+      0 0 0 1px rgb(22 22 19 / 0.06),
+      0 24px 44px -26px rgb(22 22 19 / 0.4);
+  }
+  & .pb-doc-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  & .pb-doc-kicker {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  & .pb-doc-title {
+    display: block;
+    margin-top: 6px;
+    font-family: var(--font-newsreader), Georgia, serif;
+    font-size: 18px;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  /* The score: a ring that fills with the number */
+  & .pb-doc-score {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background:
+      radial-gradient(closest-side, #fff 78%, transparent 80% 100%),
+      conic-gradient(var(--accent) calc(var(--p) * 360deg), #efece6 0);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    transition: background 0.6s ease;
+  }
+  & .pb-doc-list {
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  & .pb-doc-list li {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    height: 36px;
+  }
+  & .pb-doc-list li + li {
+    border-top: 1px dashed var(--line);
+  }
+  & .pb-doc-check {
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1.5px #cfcbc3;
+    color: #fff;
+    transition:
+      background-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  & .pb-doc-list li[data-done] .pb-doc-check {
+    background: var(--ink);
+    box-shadow: none;
+  }
+  & .pb-doc-text {
+    overflow: hidden;
+    font-size: 13px;
     color: var(--ink);
     white-space: nowrap;
     text-overflow: ellipsis;
+    background-image: linear-gradient(var(--ink-2), var(--ink-2));
+    background-repeat: no-repeat;
+    background-position: 0 55%;
+    background-size: 0% 1px;
+    transition:
+      background-size 0.45s cubic-bezier(0.65, 0, 0.35, 1) 0.1s,
+      color 0.3s ease 0.2s;
   }
-  & .pb-audit-row .ss-states {
-    flex: none;
+  & .pb-doc-list li[data-done] .pb-doc-text {
+    color: var(--ink-2);
+    background-size: 100% 1px;
   }
+  & .pb-doc-level {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  & .pb-doc-level[data-level="High"] {
+    color: #b8401f;
+  }
+  & .pb-doc-lines {
+    display: grid;
+    gap: 9px;
+    margin-top: 14px;
+  }
+  & .pb-sticky2 {
+    position: absolute;
+    z-index: 3;
+    box-sizing: border-box;
+    width: 132px;
+    padding: 18px 14px 16px;
+    border-radius: 2px 2px 10px 2px;
+    background: #f6e3a1;
+    rotate: 5deg;
+    font-family: var(--font-newsreader), Georgia, serif;
+    font-size: 16px;
+    line-height: 1.2;
+    color: var(--ink);
+    box-shadow:
+      0 1px 1px rgb(22 22 19 / 0.06),
+      0 16px 24px -14px rgb(22 22 19 / 0.45);
+  }
+  & .pb-tape {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    width: 46px;
+    height: 18px;
+    margin-left: -23px;
+    background: rgb(255 255 255 / 0.6);
+    box-shadow: 0 0 0 1px rgb(22 22 19 / 0.04);
+    rotate: -4deg;
+  }
+}
+
+@keyframes pb-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+@keyframes pb-draw {
+  from {
+    stroke-dashoffset: 400;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pn-bento .pb-app {
+    animation: none;
+  }
+  .pn-bento .pb-note,
+  .pn-bento .pb-note-card,
+  .pn-bento .pb-peer {
+    transition: none;
+  }
+}
+
+/* Product design: the window and phone sit lower so the pixel field shows above */
+.pn-bento .pb-tile--product .pb-window {
+  top: 52px;
+}
+.pn-bento .pb-tile--product .pb-phone {
+  top: 84px;
+}
+
+/* Websites & MVPs: the deploy output under the code */
+.pn-bento .pb-code {
+  height: auto;
+  padding-bottom: 14px;
+}
+.pn-bento .pb-editor .ss-window__body,
+.pn-bento .pb-editor {
+  background: #fff;
+}
+.pn-bento .pb-term {
+  margin: 4px 16px 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f4f2ee;
+  box-shadow: inset 0 0 0 1px rgb(22 22 19 / 0.06);
+  font: 11.5px/20px ui-monospace, "SF Mono", Menlo, monospace;
+  color: #3b3a36;
+}
+.pn-bento .pb-term-line {
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pn-bento .pb-term-line[data-on] {
+  opacity: 1;
+  transform: none;
+}
+.pn-bento .pb-term-mark {
+  width: 1ch;
+  color: #9a968f;
+}
+.pn-bento .pb-term-line[data-kind="ok"] .pb-term-mark {
+  color: #2f8a4f;
+}
+.pn-bento .pb-term-line[data-kind="ok"]:last-child {
+  color: #161613;
+  font-weight: 600;
+}
+
+
+/* The phone's shadow sits on its frame, not a filter: a filter on an ancestor
+   makes the notification's frosted blur render as a dark box */
+.pn-bento .pb-phone .ss-phone__frame,
+.pn-bento .pb-phone {
+  border-radius: 44px;
+}
+.pn-bento .pb-phone {
+  box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.45);
+}
+
+/* Narrow: the window's top gutter matches its left one */
+@container (max-width: 639px) {
+  .pn-bento .pb-tile--product .pb-window { top: 22px; }
+}
+
+/* Product design: the design-spec overlay on the revenue figure */
+.pn-bento .pb-spec-target {
+  position: relative;
+  display: inline-block;
+}
+.pn-bento .pb-spec {
+  position: absolute;
+  inset: -5px -8px;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  transform: scale(0.97);
+  transition:
+    opacity 0.3s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.pn-bento .pb-spec i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--accent);
+  background: #fff;
+}
+.pn-bento .pb-spec i[data-c="tl"] { top: -4px; left: -4px; }
+.pn-bento .pb-spec i[data-c="tr"] { top: -4px; right: -4px; }
+.pn-bento .pb-spec i[data-c="bl"] { bottom: -4px; left: -4px; }
+.pn-bento .pb-spec i[data-c="br"] { bottom: -4px; right: -4px; }
+/* The type spec, as a design tool labels a selection */
+.pn-bento .pb-spec b {
+  position: absolute;
+  left: -1px;
+  top: calc(100% + 6px);
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+/* A spacing measure to the card's left edge */
+.pn-bento .pb-spec em {
+  position: absolute;
+  right: calc(100% + 1px);
+  top: 50%;
+  width: 16px;
+  height: 1px;
+  background: var(--accent);
+  font-style: normal;
+  font-size: 0;
+}
+.pn-bento .pb-spec em::after {
+  content: "16";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  translate: -50% 0;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+.pn-bento .pb-spec[data-on] {
+  opacity: 1;
+  transform: none;
+}
+@media (hover: hover) {
+  .pn-bento .pb-tile--product:hover .pb-spec {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* UX research: the quote, highlighted as the cluster forms */
+.pn-bento .pb-cluster-note {
+  height: auto;
+  min-height: 38px;
+  padding: 9px 12px;
+}
+.pn-bento .pb-quote {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--ink);
+  background-image: linear-gradient(rgb(240 83 47 / 0.22), rgb(240 83 47 / 0.22));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.6s;
+}
+.pn-bento .pb-quote[data-on] {
+  background-size: 100% 100%;
 }

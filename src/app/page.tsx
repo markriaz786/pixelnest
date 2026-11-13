@@ -34,7 +34,7 @@ export default function Home() {
             We&apos;re a startup design &amp; development agency helping brands launch intuitive, user-centric digital
             products with clarity and purpose.
           </p>
-          <Link href="#process" className="group mt-6 inline-flex items-center gap-3">
+          <Link href="#process" className="group mt-4 inline-flex items-center gap-3 py-2">
             <Arrow className="text-accent transition-transform duration-300 group-hover:translate-x-1" />
             <span className="label">Learn about our process</span>
           </Link>
@@ -83,13 +83,13 @@ export default function Home() {
 
       {/* What if */}
       <section className="py-[120px] sm:py-[160px]">
-        <div className="mx-auto w-full max-w-[1180px] px-[clamp(20px,5vw,80px)]">
+        <div className="mx-auto w-full max-w-[1400px] px-[clamp(20px,5vw,96px)]">
           <ScrubText
             as="h2"
             text="Push past the limits of your current product."
             className="display max-w-[972px] text-[44px] leading-[1.1] sm:text-[64px]"
           />
-          <div className="mt-16 grid gap-10 md:grid-cols-[324px_1fr]">
+          <div className="mt-16 grid gap-10 lg:grid-cols-[324px_1fr]">
             <Reveal>
               <p className="label">What if…</p>
             </Reveal>
@@ -123,7 +123,7 @@ export default function Home() {
 
       {/* FAQ */}
       <section id="faq" className="site-wrap scroll-mt-28 py-[120px] sm:py-[160px]">
-        <div className="grid gap-12 md:grid-cols-[336px_1fr] md:gap-[170px]">
+        <div className="grid gap-12 lg:grid-cols-[300px_1fr] lg:gap-[120px] xl:grid-cols-[336px_1fr] xl:gap-[170px]">
           <Reveal>
             <h2 className="display text-[48px] leading-[1.1] sm:text-[64px]">
               Frequently asked <Selected>questions</Selected>
@@ -159,7 +159,7 @@ export default function Home() {
 
       {/* Results */}
       <section className="pb-[160px]" aria-labelledby="results-title">
-        <div className="mx-auto w-full max-w-[1180px] px-[clamp(20px,5vw,80px)]">
+        <div className="mx-auto w-full max-w-[1400px] px-[clamp(20px,5vw,96px)]">
           <Reveal>
             <p id="results-title" className="label">
               Recent client results
@@ -183,7 +183,7 @@ export default function Home() {
             ))}
           </ul>
           <Reveal>
-            <Link href="/case-studies" className="group mt-10 inline-flex items-center gap-3">
+            <Link href="/case-studies" className="group mt-8 inline-flex items-center gap-3 py-2">
               <Arrow className="text-accent transition-transform duration-300 group-hover:translate-x-1" />
               <span className="label">Read the case studies</span>
             </Link>

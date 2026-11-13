@@ -34,7 +34,7 @@ export function Header() {
 
         <nav aria-label="Main" className="hidden items-center gap-12 lg:flex">
           {nav.map((item) => (
-            <Link key={item.href} href={item.href} className="text-[16px] leading-5 hover:opacity-60">
+            <Link key={item.href} href={item.href} className="nav-link text-[16px] leading-5">
               {item.label}
             </Link>
           ))}

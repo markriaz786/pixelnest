@@ -17,7 +17,7 @@ export default function ContactPage() {
         </h1>
       </Reveal>
 
-      <div className="mt-20 grid gap-16 md:grid-cols-[336px_1fr] md:gap-[170px]">
+      <div className="mt-20 grid gap-16 lg:grid-cols-[300px_1fr] lg:gap-[120px] xl:grid-cols-[336px_1fr] xl:gap-[170px]">
         <Reveal>
           <p className="text-[22px] font-light leading-[1.25] sm:text-[24px]">
             Ready to build a better digital product? Tell us about your product, goals or challenges. We&apos;ll review
