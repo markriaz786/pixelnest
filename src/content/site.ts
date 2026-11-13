@@ -1,3 +1,5 @@
+import type { Member } from "@/components/team-card";
+
 export const site = {
   name: "Pixelnest Solutions",
   shortName: "Pixelnest",
@@ -13,10 +15,10 @@ export const site = {
   email: "hello@pixelnest.solutions",
   phone: "+1 (972) 900-8292",
   phoneHref: "tel:+19729008292",
-  // The old Framer site pointed these at a template author's accounts.
-  // Fill in the real profiles; empty links are hidden.
+  // Empty links are hidden.
   social: [
-    { label: "X / Twitter", href: "" },
+    { label: "X / Twitter", href: "https://x.com/pixelnestagency" },
+    { label: "Dribbble", href: "https://dribbble.com/pixelnest-solution" },
     { label: "Instagram", href: "" },
     { label: "LinkedIn", href: "" },
   ],
@@ -26,6 +28,7 @@ export const nav = [
   { label: "Work", href: "/case-studies" },
   { label: "Services", href: "/#services" },
   { label: "Process", href: "/#process" },
+  { label: "About", href: "/about" },
   { label: "FAQ", href: "/#faq" },
   { label: "Contact", href: "/contact" },
 ];
@@ -38,11 +41,12 @@ export const whatIf = [
   "You had a design team on call, from big redesigns to everyday screens?",
 ];
 
-export const results = [
-  { figure: "−47%", client: "MoneyFlow", text: "fewer user errors after the redesign", href: "/case-studies/moneyflow" },
-  { figure: "+32%", client: "CaseIQ", text: "faster daily workflows for legal teams", href: "/case-studies/caseiq" },
-  { figure: "+36%", client: "Both products", text: "task efficiency across the redesigns", href: "/case-studies" },
-];
+// Client results: one line per case study, shown with its measured outcomes
+// (the figures themselves live on each case study in work.ts).
+export const proof: Record<string, string> = {
+  moneyflow: "People made 47% fewer errors in their banking app after the redesign.",
+  caseiq: "Legal teams moved through their daily work 32% faster.",
+};
 
 export const stats = [
   { value: "15", label: "Projects delivered" },
@@ -51,26 +55,62 @@ export const stats = [
   { value: "3+", label: "Years in business" },
 ];
 
-export const testimonials = [
+// The About page team. SAMPLE DATA: replace with the real team before launch.
+// The member marked lead: true is featured first. photo is a path in /public
+// (e.g. "/team/name.jpg"); without one the card shows initials on a solid square. Links with an empty href are hidden. The section
+// is hidden when this list is empty.
+export const team: Member[] = [
   {
-    quote: "Saved over 400 hours per month on support.",
-    name: "Himaad",
-    role: "Head of Design, Pixelnest",
-    metric: { label: "Support hours saved", value: 400, format: "hrs", note: "per month", trend: [60, 90, 140, 180, 230, 290, 340, 400] },
+    name: "Ayaan Rahman",
+    role: "Founder & CEO, Design Lead",
+    bio: "Started Pixelnest to give young products a dependable design partner. Leads every engagement from the first call to launch, turning messy product problems into clear, buildable plans.",
+    skills: ["UX strategy", "Product design", "Workshops", "Design leadership"],
+    lead: true,
+    links: [{ label: "LinkedIn", href: "" }, { label: "Dribbble", href: "" }],
   },
   {
-    quote: "Doubled our conversion rate in 3 months.",
-    name: "Sarah M.",
-    role: "Marketing Manager, Mandala",
-    metric: { label: "Conversion rate", value: 2, format: "x", note: "in 3 months", trend: [100, 104, 112, 125, 140, 158, 181, 200] },
+    name: "Nadia Chowdhury",
+    role: "Senior Product Designer",
+    bio: "Designs dashboards and complex workflows for SaaS and B2B teams, and the design systems behind them.",
+    skills: ["SaaS", "Design systems", "Prototyping"],
+    links: [{ label: "LinkedIn", href: "" }],
   },
   {
-    quote: "50% reduction in operational costs.",
-    name: "John D.",
-    role: "CEO, AI Agent",
-    metric: { label: "Operational costs", value: 50, format: "-%", note: "year over year", trend: [100, 96, 90, 82, 74, 64, 56, 50] },
+    name: "Rafi Hasan",
+    role: "Front-end Developer",
+    bio: "Builds marketing sites and web apps in React, Framer and Webflow, keeping them fast and true to the design.",
+    skills: ["React", "Framer", "Webflow"],
+    links: [{ label: "GitHub", href: "" }],
+  },
+  {
+    name: "Mira Sen",
+    role: "UX Researcher",
+    bio: "Runs interviews, audits and usability tests, so design decisions rest on how people really use the product.",
+    skills: ["Interviews", "UX audits", "Testing"],
+    links: [{ label: "LinkedIn", href: "" }],
   },
 ];
+
+export const principles = [
+  {
+    title: "Clear expectations",
+    body: "We commit only to what we can deliver, set milestones up front and tell you early when scope changes.",
+  },
+  {
+    title: "Real user behaviour",
+    body: "Research and testing come before polish. We design around how people actually use your product.",
+  },
+  {
+    title: "Built to hand off",
+    body: "Design systems and developer-ready specs, so your team can keep shipping long after we step back.",
+  },
+  {
+    title: "Partners beyond launch",
+    body: "Many of our partnerships continue past the first project, which we see as the best measure of our work.",
+  },
+];
+
+export const industries = ["SaaS", "Fintech", "Legal tech", "Healthcare", "Enterprise & B2B", "Education"];
 
 export const services = [
   {

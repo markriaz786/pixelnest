@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Newsreader } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { site } from "@/content/site";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
 const geist = Geist({
@@ -57,6 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
+        <SmoothScroll />
       </body>
     </html>
   );

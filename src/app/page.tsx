@@ -2,12 +2,12 @@ import Link from "next/link";
 import { CtaCard } from "@/components/cta-card";
 import { Selected, Reveal } from "@/components/reveal";
 import { ServicesBento } from "@/components/bento/services-bento";
+import { ClientResults } from "@/components/client-results";
 import { ScrubText } from "@/components/motion/scrub-text";
 import { PixelCluster } from "@/components/pixel-cluster";
 import { ProcessSection } from "@/components/process-section";
-import { Testimonials } from "@/components/testimonials";
 import { WorkCard } from "@/components/work-card";
-import { faqs, results, whatIf } from "@/content/site";
+import { faqs, whatIf } from "@/content/site";
 import { caseStudies } from "@/content/work";
 
 const Arrow = ({ className = "" }: { className?: string }) => (
@@ -114,10 +114,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="site-wrap" aria-label="Testimonials">
+      {/* Client results */}
+      <section className="site-wrap" aria-label="Client results">
         <Reveal>
-          <Testimonials />
+          <ClientResults />
         </Reveal>
       </section>
 
@@ -156,40 +156,6 @@ export default function Home() {
         </div>
       </section>
 
-
-      {/* Results */}
-      <section className="pb-[160px]" aria-labelledby="results-title">
-        <div className="mx-auto w-full max-w-[1400px] px-[clamp(20px,5vw,96px)]">
-          <Reveal>
-            <p id="results-title" className="label">
-              Recent client results
-            </p>
-          </Reveal>
-          <ul className="mt-10 border-t border-line">
-            {results.map((r) => (
-              <Reveal as="li" key={r.client}>
-                <Link
-                  href={r.href}
-                  className="group grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-6 gap-y-1 border-b border-line py-8 sm:grid-cols-[220px_minmax(0,1fr)_auto] sm:gap-x-10"
-                >
-                  <span className="display text-[56px] leading-none tabular-nums sm:text-[72px]">{r.figure}</span>
-                  <span className="col-start-1 row-start-2 sm:col-start-2 sm:row-start-1">
-                    <span className="block text-[13px] font-medium uppercase tracking-[0.1em] text-muted">{r.client}</span>
-                    <span className="mt-1 block text-[18px] font-light leading-[1.35] sm:text-[20px]">{r.text}</span>
-                  </span>
-                  <Arrow className="col-start-2 row-span-2 row-start-1 text-ink/30 transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent sm:col-start-3 sm:row-span-1" />
-                </Link>
-              </Reveal>
-            ))}
-          </ul>
-          <Reveal>
-            <Link href="/case-studies" className="group mt-8 inline-flex items-center gap-3 py-2">
-              <Arrow className="text-accent transition-transform duration-300 group-hover:translate-x-1" />
-              <span className="label">Read the case studies</span>
-            </Link>
-          </Reveal>
-        </div>
-      </section>
 
       <CtaCard />
     </>

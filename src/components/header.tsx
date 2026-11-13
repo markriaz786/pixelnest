@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { nav } from "@/content/site";
 import { Logo } from "./logo";
+import { lockScroll } from "./motion/smooth-scroll";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -18,6 +19,7 @@ export function Header() {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    lockScroll(open);
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -57,7 +59,7 @@ export function Header() {
         </button>
       </div>
 
-      <div id="mobile-menu" hidden={!open} className="h-[calc(100dvh-88px)] overflow-y-auto bg-paper lg:hidden">
+      <div id="mobile-menu" data-lenis-prevent hidden={!open} className="h-[calc(100dvh-88px)] overflow-y-auto bg-paper lg:hidden">
         <nav aria-label="Mobile" className="site-wrap flex flex-col pt-4">
           {nav.map((item) => (
             <Link

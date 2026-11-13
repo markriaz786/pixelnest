@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { splitHeadings } from "./motion/text-reveals";
 
 // Fades children in when they scroll into view. Content stays visible
 // without JavaScript because the hidden state needs the `js` class on <html>.
@@ -30,7 +31,11 @@ export function Reveal({
       { rootMargin: "0px 0px -10% 0px" },
     );
     io.observe(el);
-    return () => io.disconnect();
+    const unsplit = splitHeadings(el);
+    return () => {
+      io.disconnect();
+      unsplit();
+    };
   }, []);
 
   return (

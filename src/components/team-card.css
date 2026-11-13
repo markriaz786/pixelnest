@@ -1,0 +1,161 @@
+/* Team cards: tall, name over two lines, a small headshot in the corner.
+   Hover (or the +/− button) wipes the headshot away and reveals the bio. */
+
+.tm-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+  padding: 24px 24px 72px;
+  background: #fff;
+  color: var(--ink);
+  overflow: hidden;
+}
+@media (min-width: 640px) {
+  .tm-card {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+}
+.tm-card[data-lead] {
+  background: #1f1d1b;
+  color: var(--paper);
+}
+
+.tm-name {
+  font-size: clamp(30px, 2.6vw, 38px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+.tm-role {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+.tm-card[data-lead] .tm-role {
+  color: rgb(246 244 238 / 0.7);
+}
+.tm-badge {
+  padding: 3px 7px 2px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Bio: hidden until the card is hovered or opened, then drawn in from the top */
+.tm-bio {
+  display: grid;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 24px;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--ink-2);
+  opacity: 0;
+  clip-path: inset(0 0 100% 0);
+  transition:
+    opacity 0.4s ease,
+    clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.tm-card[data-lead] .tm-bio {
+  color: rgb(246 244 238 / 0.75);
+}
+.tm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tm-chips li {
+  padding: 6px 10px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+}
+.tm-card[data-lead] .tm-chips li {
+  box-shadow: inset 0 0 0 1px rgb(246 244 238 / 0.2);
+}
+
+/* The headshot, flush in the bottom-right corner */
+.tm-shot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 36%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--tm-shot);
+  clip-path: inset(0);
+  transition: clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.tm-shot svg {
+  position: absolute;
+  inset: 14% 0 0;
+  width: 100%;
+  height: 86%;
+}
+
+/* +/− for touch and keyboard */
+.tm-toggle {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: inherit;
+  cursor: pointer;
+}
+.tm-toggle svg {
+  width: 33px;
+  height: 33px;
+}
+.tm-plus {
+  transition: transform 0.4s var(--ease-out-quint);
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.tm-card[data-open] .tm-bio {
+  opacity: 1;
+  clip-path: inset(0);
+  transition-delay: 0.15s;
+}
+.tm-card[data-open] .tm-shot {
+  clip-path: inset(100% 0 0 0);
+}
+.tm-card[data-open] .tm-plus {
+  transform: scaleY(0);
+}
+
+@media (hover: hover) {
+  .tm-card:hover .tm-bio {
+    opacity: 1;
+    clip-path: inset(0);
+    transition-delay: 0.15s;
+  }
+  .tm-card:hover .tm-shot {
+    clip-path: inset(100% 0 0 0);
+  }
+  .tm-card:hover .tm-plus {
+    transform: scaleY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-bio,
+  .tm-shot,
+  .tm-plus {
+    transition: none;
+  }
+}
